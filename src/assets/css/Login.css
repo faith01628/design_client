@@ -1,0 +1,118 @@
+.login-container {
+    padding-top: 100px;
+}
+
+.login-container .row {
+    justify-content: center;
+}
+
+.login-form {
+    width: 300px;
+    background: #f7f7f7;
+    padding: 30px;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: left;
+}
+
+.login-form h2 {
+    text-align: center;
+}
+
+.login-form .form-group {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.loginBtn {
+    text-align: center;
+    margin-top: 10px !important;
+}
+
+.login-form .form-group label {
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+
+.login-form input[type="email"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    /* Remove border */
+    border-bottom: 1px solid #ccc;
+    /* Add bottom border */
+    font-size: 14px;
+    transition: border-bottom-color 0.3s;
+    /* Smooth transition for bottom border color */
+}
+
+.login-form input[type="email"]:focus,
+.login-form input[type="password"]:focus {
+    outline: none;
+    /* Remove outline */
+    border-bottom-color: #007bff;
+    /* Change bottom border color on focus */
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+    /* Darker blue on hover */
+    border-color: #0062cc;
+    /* Darker border on hover */
+    transform: scale(1.05);
+    /* Scale up slightly on hover */
+}
+
+.forgot-password {
+    text-align: right;
+    /* Align text to the right */
+    margin-top: -10px;
+    /* Adjust position up to align with bottom of password input */
+}
+
+.forgot-password a {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    /* Smooth transition for text color */
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+    /* Underline text on hover */
+    color: #0056b3;
+    /* Darker blue on hover */
+}
+
+.register-link {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.register-link a {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    /* Smooth transition for text color */
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+    /* Underline text on hover */
+    color: #0056b3;
+    /* Darker blue on hover */
+}

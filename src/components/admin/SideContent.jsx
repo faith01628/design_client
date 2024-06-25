@@ -1,6 +1,6 @@
 import { Flex } from "antd"
-import ContentSideBar from "./ContentSideBar"
-import Activity from "./Activity"
+import ContentSideBar from "../admin/layout/ContentSideBar"
+import Activity from "../admin/layout/Activity"
 
 const SideContent = () => {
     return (

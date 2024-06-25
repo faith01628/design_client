@@ -1,5 +1,5 @@
 import { Button, Card, Flex, Image, Typography } from "antd";
-import plantData from "../plantData";
+import plantData from "../../../plantData.js";
 
 const { Meta } = Card;
 const ProductLists = () => {

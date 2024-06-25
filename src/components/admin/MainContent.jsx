@@ -1,7 +1,7 @@
 import { Flex } from "antd"
-import Banner from "./Banner"
-import ProductLists from "./ProductLists"
-import SellerLists from "./SellerLists"
+import Banner from "../admin/layout/Banner"
+import ProductLists from "../admin/layout/ProductLists"
+import SellerLists from "../admin/layout/SellerLists"
 
 const MainContent = () => {
     return (
