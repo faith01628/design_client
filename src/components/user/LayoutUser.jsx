@@ -1,15 +1,22 @@
+import React, { useState } from 'react';
 import { Layout } from 'antd';
-import UserHeader from './layout/Header';
+import UserHeader from './layout/Header'; // Đảm bảo đường dẫn và tên file chính xác
 import PropTypes from 'prop-types';
 
 const { Content } = Layout;
 
 const LayoutUser = ({ children }) => {
+    const [currentInterface, setCurrentInterface] = useState('desktop');
+
+    const handleInterfaceChange = (interfaceType) => {
+        setCurrentInterface(interfaceType);
+    };
+
     return (
         <Layout>
-            <UserHeader />
+            <UserHeader onInterfaceChange={handleInterfaceChange} />
             <Content className="content">
-                {children}
+                {React.cloneElement(children, { currentInterface })}
             </Content>
         </Layout>
     );

@@ -1,21 +1,19 @@
 import { useEffect, useState } from 'react';
-import { Layout, Typography, Row, Col, Avatar, Divider } from 'antd';
+import { Layout, Typography, Row, Col, Avatar, Button } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import axios from 'axios';
-import UserHeader from './Header'; // Đảm bảo đúng đường dẫn
-import '../../../assets/css/user/index.css';
+import PropTypes from 'prop-types'; // Import PropTypes để kiểm tra props
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
 
-const UserProfile = () => {
+const UserProfile = ({ currentInterface }) => {
     const [profile, setProfile] = useState({
         fullname: '',
         phone: '',
         address: '',
         avatar: '',
     });
-    const [currentInterface, setCurrentInterface] = useState('desktop');
 
     useEffect(() => {
         fetchProfile();
@@ -50,35 +48,48 @@ const UserProfile = () => {
         }
     };
 
-    const handleInterfaceChange = (interfaceType) => {
-        setCurrentInterface(interfaceType);
-    };
-
     return (
-        <Layout style={{ minHeight: '100vh' }} className={`biopage ${currentInterface}`}>
-            <UserHeader onInterfaceChange={handleInterfaceChange} />
-
-            <Content style={{ padding: '24px', backgroundColor: '#f0f2f5' }}>
-                <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
-                    <Row gutter={[16, 16]}>
-                        <Col span={currentInterface === 'desktop' ? 24 : (currentInterface === 'tablet' ? 12 : 8)} style={{ textAlign: 'center', marginBottom: '16px' }}>
-                            <div className={`avatar-container`}>
-                                <Avatar size={currentInterface === 'desktop' ? 120 : (currentInterface === 'tablet' ? 80 : 60)} icon={<UserOutlined />} src={profile.avatar} />
-                            </div>
-                        </Col>
-                        <Col span={currentInterface === 'desktop' ? 24 : (currentInterface === 'tablet' ? 12 : 16)}>
-                            <Title level={3}>{profile.fullname}</Title>
-                            <Text strong>Phone:</Text> <Text>{profile.phone}</Text>
-                            <br />
-                            <Text strong>Address:</Text> <Text>{profile.address}</Text>
-                        </Col>
-                    </Row>
-
-                    <Divider />
-                </div>
-            </Content>
-        </Layout>
+        <Content className="content">
+            <div className="profile-container">
+                <Row gutter={[16, 16]}>
+                    <Col span={24} className="avatar-col">
+                        <div className="avatar-container">
+                            <Avatar
+                                size={currentInterface === 'desktop' ? 120 : 120}
+                                icon={<UserOutlined />}
+                                src={profile.avatar}
+                            />
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8} className="info-col">
+                        <Button className="profile-button" block>
+                            About Me
+                        </Button>
+                    </Col>
+                    <Col xs={24} sm={12} md={8} className="info-col">
+                        <Button className="profile-button" block>
+                            Portfolio
+                        </Button>
+                    </Col>
+                    <Col xs={24} sm={12} md={8} className="info-col">
+                        <Button className="profile-button" block>
+                            Review
+                        </Button>
+                    </Col>
+                    <Col span={24} className="info-col">
+                        <Title level={3} className="title">{profile.fullname}</Title>
+                        <Text strong>Phone:</Text> <Text className="ant-typography">{profile.phone}</Text>
+                        <br />
+                        <Text strong>Address:</Text> <Text className="ant-typography">{profile.address}</Text>
+                    </Col>
+                </Row>
+            </div>
+        </Content>
     );
+};
+
+UserProfile.propTypes = {
+    currentInterface: PropTypes.string.isRequired, // Kiểm tra và đánh dấu currentInterface là bắt buộc
 };
 
 export default UserProfile;

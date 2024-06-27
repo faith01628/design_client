@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { Button, Dropdown, Menu } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { FaLeaf } from 'react-icons/fa';
+import PropTypes from 'prop-types'; // Import PropTypes từ thư viện prop-types
 import '../../../assets/css/user/index.css'; // Đảm bảo đúng đường dẫn
 
-// eslint-disable-next-line react/prop-types
 const UserHeader = ({ onInterfaceChange }) => {
     const [currentInterface, setCurrentInterface] = useState('desktop');
 
@@ -64,6 +64,10 @@ const UserHeader = ({ onInterfaceChange }) => {
             </div>
         </div>
     );
+};
+
+UserHeader.propTypes = {
+    onInterfaceChange: PropTypes.func.isRequired, // Kiểm tra kiểu và bắt buộc tồn tại
 };
 
 export default UserHeader;
