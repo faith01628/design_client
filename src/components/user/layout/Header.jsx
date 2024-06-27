@@ -4,20 +4,19 @@ import { UserOutlined } from '@ant-design/icons';
 import { FaLeaf } from 'react-icons/fa';
 import '../../../assets/css/user/index.css'; // Đảm bảo đúng đường dẫn
 
-// eslint-disable-next-line react/prop-types
 const UserHeader = ({ onInterfaceChange }) => {
     const [currentInterface, setCurrentInterface] = useState('desktop');
+
+    const handleInterfaceChange = (interfaceType) => {
+        setCurrentInterface(interfaceType);
+        onInterfaceChange(interfaceType); // Gửi sự kiện lên component cha (LayoutUser)
+    };
 
     const handleLogout = () => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('userRole');
         localStorage.removeItem('userName');
         window.location.href = '/login';
-    };
-
-    const handleSwitchInterface = (interfaceType) => {
-        setCurrentInterface(interfaceType);
-        onInterfaceChange(interfaceType); // Gửi sự kiện lên component cha (UserProfile)
     };
 
     const menu = (
@@ -38,13 +37,13 @@ const UserHeader = ({ onInterfaceChange }) => {
             </div>
 
             <div className="navbar">
-                <Button className={`nav-button ${currentInterface === 'desktop' ? 'active' : ''}`} onClick={() => handleSwitchInterface('desktop')}>
+                <Button className={`nav-button ${currentInterface === 'desktop' ? 'active' : ''}`} onClick={() => handleInterfaceChange('desktop')}>
                     GIAO DIỆN DESKTOP
                 </Button>
-                <Button className={`nav-button ${currentInterface === 'tablet' ? 'active' : ''}`} onClick={() => handleSwitchInterface('tablet')}>
+                <Button className={`nav-button ${currentInterface === 'tablet' ? 'active' : ''}`} onClick={() => handleInterfaceChange('tablet')}>
                     GIAO DIỆN TABLET
                 </Button>
-                <Button className={`nav-button ${currentInterface === 'mobile' ? 'active' : ''}`} onClick={() => handleSwitchInterface('mobile')}>
+                <Button className={`nav-button ${currentInterface === 'mobile' ? 'active' : ''}`} onClick={() => handleInterfaceChange('mobile')}>
                     GIAO DIỆN MOBILE
                 </Button>
             </div>
