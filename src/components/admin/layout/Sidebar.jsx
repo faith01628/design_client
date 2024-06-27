@@ -1,12 +1,34 @@
+import { useState } from 'react';
 import { Flex, Menu } from 'antd';
-import { FaLeaf } from 'react-icons/fa6';
+import { FaLeaf } from 'react-icons/fa';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { UserOutlined, ProfileOutlined, LogoutOutlined, OrderedListOutlined, CarryOutOutlined, SettingOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const [selectedKey, setSelectedKey] = useState(getSelectedKey(location.pathname));
+
+    function getSelectedKey(pathname) {
+        switch (pathname) {
+            case '/admin':
+                return '1';
+            case '/admin/user-manager':
+                return '2';
+            case '/todo':
+                return '3';
+            case '/my-orders':
+                return '4';
+            case '/setting':
+                return '5';
+            default:
+                return '1';
+        }
+    }
 
     const handleMenuClick = (e) => {
+        setSelectedKey(e.key);
+
         switch (e.key) {
             case '1':
                 navigate('/admin');
@@ -45,7 +67,7 @@ const Sidebar = () => {
 
             <Menu
                 mode="inline"
-                defaultSelectedKeys={['1']}
+                selectedKeys={[selectedKey]}
                 className="menu-bar"
                 onClick={handleMenuClick}
                 items={[

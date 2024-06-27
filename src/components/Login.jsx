@@ -29,11 +29,12 @@ function Login({ onLogin }) {
                     // Lưu thông tin đăng nhập vào Local Storage
                     localStorage.setItem('isLoggedIn', 'true');
                     localStorage.setItem('accessToken', data.data.token);
+                    localStorage.setItem('id', data.data.user.id);
                     localStorage.setItem('userRole', data.data.user.role);
                     localStorage.setItem('userName', data.data.user.username);
                     
                     // Cập nhật trạng thái đăng nhập
-                    onLogin(true, data.data.user.role);
+                    onLogin(true, data.data.user.role, data.data.token);
                     if (data.data.user.role === 'admin') {
                         navigate('/admin');
                     } else {
@@ -60,8 +61,7 @@ function Login({ onLogin }) {
     };
 
     const handleRegister = () => {
-        alert('Chuyển sang trang đăng ký');
-        // Có thể thêm chuyển hướng sang trang đăng ký ở đây
+        navigate('/register'); // Chuyển hướng sang trang đăng ký
     };
 
     return (
