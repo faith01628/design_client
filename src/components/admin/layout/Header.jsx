@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Button, Flex, Typography, Dropdown, Menu } from 'antd';
-import Search from 'antd/es/transfer/search';
+import { Button, Typography, Dropdown, Menu, Input } from 'antd';
 import { MessageOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
+
+const { Search } = Input;
 
 const CustomHeader = () => {
     const [userName, setUserName] = useState('');
@@ -32,26 +33,26 @@ const CustomHeader = () => {
     );
 
     return (
-        <Flex align="center" justify="space-between">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Typography.Title level={3} type="secondary">
                 Welcome back, {userName}
             </Typography.Title>
 
-            <Flex align="center" gap="1.5rem">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
                 <Search placeholder="Search Dashboard" allowClear />
 
-                <Flex align="center" gap="10px">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <MessageOutlined className="header-icon" />
                     <NotificationOutlined className="header-icon" />
-                </Flex>
+                </div>
 
                 <Dropdown overlay={menu} trigger={['click']}>
                     <Button type="text" className="avatar-button">
                         <UserOutlined className="header-icon" />
                     </Button>
                 </Dropdown>
-            </Flex>
-        </Flex>
+            </div>
+        </div>
     );
 };
 

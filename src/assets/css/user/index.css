@@ -1,0 +1,176 @@
+/* CSS chung */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #d2e3c8;
+    height: 60px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+}
+
+.nav-button {
+    color: black;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 5px;
+    padding: 10px 15px;
+    font-size: 16px;
+    line-height: 1.5;
+    transition: background 0.3s ease;
+}
+
+.nav-button.active {
+    background: #4f6f52;
+    color: white;
+}
+
+.loginbtn {
+    margin-right: 20px;
+}
+
+.use-this {
+    color: white;
+    background: #4f6f52;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.use-this:hover {
+    background: rgba(25, 255, 255, 0.8);
+}
+
+.maticon {
+    display: flex;
+    align-items: center;
+}
+
+.avatar-button {
+    color: white;
+}
+
+.header-icon {
+    font-size: 18px;
+}
+
+/* Giao diện Desktop */
+.biopage.desktop .content {
+    padding: 24px;
+    background-color: #f0f2f5;
+}
+
+.biopage.desktop .avatar-container {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+    border: 4px solid #1890ff;
+}
+
+.biopage.desktop .title {
+    text-align: center;
+}
+
+.biopage.desktop .profile-info {
+    text-align: center;
+}
+
+/* Giao diện Tablet */
+.biopage.tablet .content {
+    padding: 20px;
+    background-color: #f5f7fa;
+}
+
+.biopage.tablet .avatar-container {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+    border: 4px solid #1890ff;
+}
+
+.biopage.tablet .title {
+    text-align: center;
+}
+
+.biopage.tablet .profile-info {
+    text-align: center;
+}
+
+/* Giao diện Mobile */
+.biopage.mobile .content {
+    padding: 16px;
+    background-color: #f8f9fb;
+}
+
+.biopage.mobile .avatar-container {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+    border: 4px solid #1890ff;
+}
+
+.biopage.mobile .title {
+    text-align: center;
+}
+
+.biopage.mobile .profile-info {
+    text-align: center;
+}
+
+/* Các điều chỉnh chung cho kích thước màn hình */
+@media (max-width: 1024px) {
+    .header-container {
+        padding: 15px 20px;
+        height: auto;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .nav-button {
+        margin-bottom: 10px;
+    }
+
+    .loginbtn {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        padding: 15px 20px;
+    }
+
+    .logo {
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+    }
+}

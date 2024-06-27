@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import './App.css'
+import './App.css';
 import UserManager from './components/admin/UserManager';
 import Login from './components/Login';
 import LayoutAdmin from './components/admin/LayoutAdmin';
 import PropTypes from 'prop-types';
 import MainContent from './components/admin/MainContent';
 import SideContent from './components/admin/SideContent';
+import Register from './components/Register';
+import LayoutUser from './components/user/LayoutUser';
+import BioPage from './components/user/layout/BioPage01';
 
 const Admin = ({ accessToken }) => {
   return (
@@ -14,20 +17,23 @@ const Admin = ({ accessToken }) => {
       <MainContent />
       <SideContent />
     </LayoutAdmin>
-  )
-}
+  );
+};
 
 Admin.propTypes = {
   accessToken: PropTypes.string.isRequired,
 };
 
-const User = () => {
+const User = ({ accessToken }) => {
   return (
-    <div>
-      <h2>User Dashboard</h2>
-      {/* Add user-specific content here */}
-    </div>
+    <LayoutUser accessToken={accessToken}>
+      <BioPage />
+    </LayoutUser>
   );
+};
+
+User.propTypes = {
+  accessToken: PropTypes.string.isRequired,
 };
 
 const App = () => {
@@ -43,15 +49,22 @@ const App = () => {
     setIsLoggedIn(status);
     setUserRole(role);
     setAccessToken(token);
-    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('isLoggedIn', status.toString());
     localStorage.setItem('userRole', role);
     localStorage.setItem('accessToken', token);
   };
+
+  useEffect(() => {
+    setIsLoggedIn(localStorage.getItem('isLoggedIn') === 'true');
+    setUserRole(localStorage.getItem('userRole'));
+    setAccessToken(localStorage.getItem('accessToken'));
+  }, []);
 
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
+        <Route path="/register" element={<Register />} />
         <Route
           path="/admin"
           element={isLoggedIn && userRole === 'admin' ? <Admin accessToken={accessToken} /> : <Navigate to="/login" />}
@@ -62,7 +75,7 @@ const App = () => {
         />
         <Route
           path="/user"
-          element={isLoggedIn && userRole === 'user' ? <User /> : <Navigate to="/login" />}
+          element={isLoggedIn && userRole === 'user' ? <User accessToken={accessToken} /> : <Navigate to="/login" />}
         />
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
