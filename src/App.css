@@ -1,4 +1,4 @@
-@keyframes gradientAnimation {
+/* @keyframes gradientAnimation {
     0% {
         background-position: 0% 50%;
     }
@@ -10,7 +10,7 @@
     100% {
         background-position: 100% 50%;
     }
-}
+} */
 
 html, body {
     height: 100%;
@@ -19,9 +19,9 @@ html, body {
 
 #root {
     min-height: 100%;
-    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab, #da4444, #c6da44);
+    /* background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab, #da4444, #c6da44);
     background-size: 600% 100%;
-    animation: gradientAnimation 15s ease infinite;
+    animation: gradientAnimation 15s ease infinite; */
 }
 
 .App {
