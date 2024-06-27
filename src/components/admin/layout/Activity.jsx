@@ -37,7 +37,7 @@ const Activity = () => {
             <List pagination dataSource={data} renderItem={(user, index) => (
                 <List.Item>
                     <List.Item.Meta avatar={<Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`} />} title={<a href="#">{user.name}</a>}
-                    description='Ordered a new plant'></List.Item.Meta>
+                        description='Ordered a new plant'></List.Item.Meta>
                     <span className="gray--color">
                         {user.orderTime} {user.orderTime == 1 ? 'day ago' : 'days ago'}
                     </span>
