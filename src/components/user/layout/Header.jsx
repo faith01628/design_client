@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button, Dropdown, Menu } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { FaLeaf } from 'react-icons/fa';
+import PropTypes from 'prop-types'; // Import PropTypes từ thư viện prop-types
 import '../../../assets/css/user/index.css'; // Đảm bảo đúng đường dẫn
 
 const UserHeader = ({ onInterfaceChange }) => {
@@ -22,7 +23,7 @@ const UserHeader = ({ onInterfaceChange }) => {
     const menu = (
         <Menu>
             <Menu.Item key="profile">
-                <a href="#">Thông tin cá nhân</a>
+                <a href="/user/personal-info">Thông tin cá nhân</a>
             </Menu.Item>
             <Menu.Item key="logout" onClick={handleLogout}>
                 Đăng xuất
@@ -63,6 +64,10 @@ const UserHeader = ({ onInterfaceChange }) => {
             </div>
         </div>
     );
+};
+
+UserHeader.propTypes = {
+    onInterfaceChange: PropTypes.func.isRequired, // Kiểm tra kiểu và bắt buộc tồn tại
 };
 
 export default UserHeader;

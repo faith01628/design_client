@@ -12,19 +12,19 @@ function Login({ onLogin }) {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        
+
         try {
-            const response = await fetch('http://192.168.10.156:3000/login', {
+            const response = await fetch('http://192.168.1.7:3000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ email, password }),
             });
-    
+
             if (response.status === 200) {
                 const data = await response.json();
-                
+
                 if (data.data.user && (data.data.user.role === 'admin' || data.data.user.role === 'user')) {
                     // Lưu thông tin đăng nhập vào Local Storage
                     localStorage.setItem('isLoggedIn', 'true');
@@ -32,7 +32,7 @@ function Login({ onLogin }) {
                     localStorage.setItem('id', data.data.user.id);
                     localStorage.setItem('userRole', data.data.user.role);
                     localStorage.setItem('userName', data.data.user.username);
-                    
+
                     // Cập nhật trạng thái đăng nhập
                     onLogin(true, data.data.user.role, data.data.token);
                     if (data.data.user.role === 'admin') {
@@ -54,7 +54,7 @@ function Login({ onLogin }) {
             console.error('There was an error!', error);
         }
     };
-    
+
     const handleForgotPassword = () => {
         alert('Xử lý quên mật khẩu');
         // Có thể thêm logic xử lý quên mật khẩu ở đây

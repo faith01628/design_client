@@ -10,6 +10,7 @@ import SideContent from './components/admin/SideContent';
 import Register from './components/Register';
 import LayoutUser from './components/user/LayoutUser';
 import BioPage from './components/user/layout/BioPage01';
+import PersonalInfor from './components/user/PersonalInfor';
 
 const Admin = ({ accessToken }) => {
   return (
@@ -77,7 +78,12 @@ const App = () => {
           path="/user"
           element={isLoggedIn && userRole === 'user' ? <User accessToken={accessToken} /> : <Navigate to="/login" />}
         />
+        <Route
+          path="/user/personal-info"
+          element={isLoggedIn && userRole === 'user' ? <PersonalInfor accessToken={accessToken} /> : <Navigate to="/login" />}
+        />
         <Route path="*" element={<Navigate to="/login" />} />
+
       </Routes>
     </Router>
   );

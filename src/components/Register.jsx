@@ -41,7 +41,7 @@ function Register() {
         }
 
         try {
-            const response = await fetch('http://192.168.10.156:3000/createuser', {
+            const response = await fetch('http://192.168.1.7:3000/createuser', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

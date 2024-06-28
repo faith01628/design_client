@@ -21,7 +21,7 @@ const UserManager = ({ accessToken }) => {
                     return;
                 }
 
-                const response = await fetch('http://192.168.10.156:3000/users', {
+                const response = await fetch('http://192.168.1.7:3000/users', {
                     method: "GET",
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
@@ -110,17 +110,17 @@ const UserManager = ({ accessToken }) => {
             cancelText: 'Hủy',
             onOk: async () => {
                 try {
-                    const response = await fetch(`http://192.168.10.156:3000/deleteuser/${record.id}`, {
+                    const response = await fetch(`http://192.168.1.7:3000/deleteuser/${record.id}`, {
                         method: 'DELETE',
                         headers: {
                             Authorization: `Bearer ${accessToken}`,
                         },
                     });
-    
+
                     if (!response.ok) {
                         throw new Error('Lỗi khi xóa người dùng từ máy chủ.');
                     }
-    
+
                     const updatedUsers = users.filter(user => user.id !== record.id);
                     setUsers(updatedUsers);
                     setSelectedUser(null); // Đặt lại selectedUser về null
@@ -131,7 +131,7 @@ const UserManager = ({ accessToken }) => {
             },
         });
     };
-    
+
     const handleCloseModal = () => {
         setModalVisible(false);
         setSelectedUser(null);
@@ -145,7 +145,7 @@ const UserManager = ({ accessToken }) => {
                 return;
             }
 
-            const response = await fetch(`http://192.168.10.156:3000/updateuser/${selectedUser.id}`, {
+            const response = await fetch(`http://192.168.1.7:3000/updateuser/${selectedUser.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
