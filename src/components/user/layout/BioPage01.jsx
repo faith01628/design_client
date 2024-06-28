@@ -1,13 +1,11 @@
-
 import { useEffect, useState } from 'react';
 import { Layout, Typography, Row, Col, Avatar, Button } from 'antd';
-
 import { UserOutlined } from '@ant-design/icons';
-import { FaLeaf } from 'react-icons/fa';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import '../../../assets/css/user/index.css'; // Đảm bảo đúng đường dẫn
-
+import '../../../assets/css/user/index.css'; // Ensure the correct path
+import '../../../assets/css/user/bioPage01.scss';
+import ActionProfile from '../ModalButton';
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -68,37 +66,30 @@ const UserProfile = ({ currentInterface }) => {
                             />
                         </div>
                     </Col>
-                    {/* <Col xs={24} sm={12} md={8} className="info-col"> */}
-                    <div className='profile-button-container'>
-                        <Button className="profile-button" block>
-                            About Me
-                        </Button>
-                        <Button className="profile-button" block>
-                            Portfolio
-                        </Button>
-                        <Button className="profile-button" block>
-                            Review
-                        </Button>
-                    </div>
-                    {/* </Col> */}
-                    {/* <Col xs={24} sm={12} md={8} className="info-col">
-                    </Col>
-                    <Col xs={24} sm={12} md={8} className="info-col">
-                    </Col> */}
                     <Col span={24} className="info-col">
-                        <Title level={3} className="title">{profile.fullname}</Title>
-                        <Text strong>Phone:</Text> <Text className="ant-typography">{profile.phone}</Text>
-                        <br />
-                        <Text strong>Address:</Text> <Text className="ant-typography">{profile.address}</Text>
+                        <div className='profile-button-container'>
+                            <Button className="profile-button" block>
+                                About Me
+                            </Button>
+                            <Button className="profile-button" block>
+                                Portfolio
+                            </Button>
+                            <Button className="profile-button" block>
+                                Review
+                            </Button>
+                        </div>
                     </Col>
                 </Row>
+            </div>
+            <div className='action-container'>
+                <ActionProfile />
             </div>
         </Content>
     );
 };
 
 UserProfile.propTypes = {
-    currentInterface: PropTypes.string.isRequired, // Kiểm tra và đánh dấu currentInterface là bắt buộc
+    currentInterface: PropTypes.string.isRequired, // Ensure currentInterface is required
 };
 
 export default UserProfile;
