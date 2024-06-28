@@ -73,13 +73,35 @@
     font-size: 18px;
 }
 
+.avatar-col {
+    position: relative;
+    overflow: hidden; /* Đảm bảo không có overflow khi sử dụng absolute positioning */
+}
+
+.avatar-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.background-avatar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Đảm bảo hình ảnh phủ đầy khu vực background */
+}
+
 .avatar-container {
-    width: 120px;
-    height: 120px;
-    border: 4px solid #1890ff;
-    border-radius: 50%;
-    overflow: hidden;
-    margin: 0 auto;
+    position: relative;
+    z-index: 1; /* Đặt z-index để avatar-container nằm trên */
+}
+
+.avatar-container .ant-avatar {
+    position: relative; /* Đặt lại về relative để nó không bị đẩy ra khỏi flow */
 }
 
 .profile-container {
