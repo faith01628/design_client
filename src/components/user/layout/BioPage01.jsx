@@ -34,7 +34,7 @@ const UserProfile = ({ currentInterface }) => {
         }
 
         try {
-            const response = await axios.get('http://192.168.1.7:3000/profilebyid', {
+            const response = await axios.get('http://192.168.10.156:3000/profilebyid', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     accountid: accountid,
@@ -64,25 +64,27 @@ const UserProfile = ({ currentInterface }) => {
                             <Avatar
                                 size={currentInterface === 'desktop' ? 120 : 120}
                                 icon={<UserOutlined />}
-                                src={`http://192.168.1.7:3000/${profile.avatar}`}
+                                src={`http://192.168.10.156:3000/${profile.avatar}`}
                             />
                         </div>
                     </Col>
-                    <Col xs={24} sm={12} md={8} className="info-col">
+                    {/* <Col xs={24} sm={12} md={8} className="info-col"> */}
+                    <div className='profile-button-container'>
                         <Button className="profile-button" block>
                             About Me
                         </Button>
-                    </Col>
-                    <Col xs={24} sm={12} md={8} className="info-col">
                         <Button className="profile-button" block>
                             Portfolio
                         </Button>
-                    </Col>
-                    <Col xs={24} sm={12} md={8} className="info-col">
                         <Button className="profile-button" block>
                             Review
                         </Button>
+                    </div>
+                    {/* </Col> */}
+                    {/* <Col xs={24} sm={12} md={8} className="info-col">
                     </Col>
+                    <Col xs={24} sm={12} md={8} className="info-col">
+                    </Col> */}
                     <Col span={24} className="info-col">
                         <Title level={3} className="title">{profile.fullname}</Title>
                         <Text strong>Phone:</Text> <Text className="ant-typography">{profile.phone}</Text>

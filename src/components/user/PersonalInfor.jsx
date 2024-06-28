@@ -35,7 +35,7 @@ const PersonalInfo = ({ accessToken }) => {
         const accountId = localStorage.getItem('id');
 
         try {
-            const response = await fetch('http://192.168.1.7:3000/createprofile', {
+            const response = await fetch('http://192.168.10.156:3000/createprofile', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
