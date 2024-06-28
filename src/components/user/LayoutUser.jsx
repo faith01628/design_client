@@ -16,7 +16,7 @@ const LayoutUser = ({ children }) => {
     return (
         <Layout>
             <UserHeader onInterfaceChange={handleInterfaceChange} />
-            <Content className="content">
+            <Content>
                 {React.cloneElement(children, { currentInterface })}
             </Content>
         </Layout>

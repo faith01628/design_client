@@ -1,19 +1,11 @@
 import { useEffect, useState } from 'react';
-<<<<<<< HEAD
-import { Layout, Typography, Row, Col, Avatar, Button, Modal, Input, Select, Popconfirm, message } from 'antd';
-import { UserOutlined, MinusOutlined, DeleteOutlined } from '@ant-design/icons';
-import axios from 'axios';
-import PropTypes from 'prop-types';
-import '../../../assets/css/user/index.css';
-=======
-import { Layout, Typography, Row, Col, Avatar, Button } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { Layout, Typography, Row, Col, Avatar, Button, Select, message, Modal, Input, Popconfirm } from 'antd';
+import { UserOutlined, MinusOutlined, DeleteOutlined, FacebookOutlined, InstagramOutlined, TikTokOutlined, YoutubeOutlined, TwitterOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import '../../../assets/css/user/index.css'; // Ensure the correct path
 import '../../../assets/css/user/bioPage01.scss';
 import ActionProfile from '../ModalButton';
->>>>>>> huy
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -31,6 +23,8 @@ const UserProfile = ({ currentInterface }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [additionalInfo, setAdditionalInfo] = useState([]);
     const [availableLabels, setAvailableLabels] = useState([]);
+    const [profileId, setProfileId] = useState(null); // State to store profileId
+    const [linkCount, setLinkCount] = useState(0); // State to count number of links
 
     useEffect(() => {
         fetchProfile();
@@ -65,9 +59,11 @@ const UserProfile = ({ currentInterface }) => {
                 backgroundavatar: data.data.backgroundavata,
             });
 
-            // Lấy danh sách label từ thông tin hồ sơ
+            setProfileId(data.data.id); // Save profileId from response into state
+
+            // Get labels from profile data
             const labelsFromProfile = Object.keys(data.data).filter(key => key !== 'avata' && key !== 'backgroundavata' && !key.includes('id'));
-            // Lọc những label chưa có trong modal
+            // Filter labels not in modal
             const labelsNotInModal = labelsFromProfile.filter(label => !Object.keys(profile).includes(label));
             setAvailableLabels(labelsNotInModal);
 
@@ -85,19 +81,16 @@ const UserProfile = ({ currentInterface }) => {
     };
 
     const addInput = (labels) => {
-        // Lặp qua các label được chọn từ Select
         labels.forEach(label => {
-            // Tìm label được chọn trong availableLabels
             const selectedLabel = availableLabels.find(item => item === label);
-    
+
             if (selectedLabel) {
-                // Thêm label vào additionalInfo với giá trị mặc định là ''
                 const newInfo = [...additionalInfo, { label: selectedLabel, value: '' }];
                 setAdditionalInfo(newInfo);
             }
         });
     };
-    
+
     const removeInput = (index) => {
         const newInfo = [...additionalInfo];
         newInfo.splice(index, 1);
@@ -145,6 +138,36 @@ const UserProfile = ({ currentInterface }) => {
         setAdditionalInfo(newInfo);
     };
 
+    const handleLinkCreation = async (title, link, indexid) => {
+        try {
+            const token = localStorage.getItem('accessToken');
+            const response = await axios.post(
+                'http://192.168.10.156:3000/createlink',
+                {
+                    profileid: profileId,
+                    title: title,
+                    link: link,
+                    indexid: indexid, // Include indexid in the request
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+
+            if (response.status === 200) {
+                message.success('Đã tạo đường link thành công');
+                setLinkCount(prevCount => prevCount + 1); // Increment link count after successful creation
+            } else {
+                message.error('Lỗi khi tạo đường link:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Lỗi khi tạo đường link:', error.message);
+        }
+    };
+
     return (
         <Content className="content">
             <div className="profile-container">
@@ -161,26 +184,9 @@ const UserProfile = ({ currentInterface }) => {
                             />
                         </div>
                     </Col>
-<<<<<<< HEAD
-
-                    <Col xs={24} sm={12} md={8} className="info-col">
-                        <Button className="profile-button" block onClick={showModal}>
-                            About Me
-                        </Button>
-                    </Col>
-                    <Col xs={24} sm={12} md={8} className="info-col">
-                        <Button className="profile-button" block>
-                            Portfolio
-                        </Button>
-                    </Col>
-                    <Col xs={24} sm={12} md={8} className="info-col">
-                        <Button className="profile-button" block>
-                            Review
-                        </Button>
-=======
                     <Col span={24} className="info-col">
                         <div className='profile-button-container'>
-                            <Button className="profile-button" block>
+                            <Button className="profile-button" block onClick={showModal}>
                                 About Me
                             </Button>
                             <Button className="profile-button" block>
@@ -190,7 +196,6 @@ const UserProfile = ({ currentInterface }) => {
                                 Review
                             </Button>
                         </div>
->>>>>>> huy
                     </Col>
                 </Row>
                 <Modal title="About Me" visible={isModalVisible} onCancel={handleCancel} footer={null}>
@@ -251,7 +256,7 @@ const UserProfile = ({ currentInterface }) => {
                         style={{ width: '100%', marginTop: '10px' }}
                         mode="multiple"
                         allowClear={false}
-                        onChange={addInput} // Gọi hàm addInput khi có thay đổi trong Select
+                        onChange={addInput}
                     >
                         {availableLabels.map((label, index) => (
                             <Option key={index} value={label}>{label}</Option>
@@ -260,18 +265,45 @@ const UserProfile = ({ currentInterface }) => {
                 </Modal>
             </div>
             <div className='action-container'>
-                <ActionProfile />
+                <ActionProfile profileId={profileId} handleLinkCreation={handleLinkCreation} />
+            </div>
+            <div className="review-icons-container">
+                {[...Array(linkCount + 4)].map((_, index) => (
+                    <div key={index} className="review-icon">
+                        {index === 4 && (
+                            <FacebookOutlined
+                                onClick={() => handleLinkCreation('Facebook', 'http://facebook.com', index)}
+                            />
+                        )}
+                        {index === 5 && (
+                            <InstagramOutlined
+                                onClick={() => handleLinkCreation('Instagram', 'http://instagram.com', index)}
+                            />
+                        )}
+                        {index === 6 && (
+                            <TikTokOutlined
+                                onClick={() => handleLinkCreation('TikTok', 'http://tiktok.com', index)}
+                            />
+                        )}
+                        {index === 7 && (
+                            <YoutubeOutlined
+                                onClick={() => handleLinkCreation('Youtube', 'http://youtube.com', index)}
+                            />
+                        )}
+                        {index === 8 && (
+                            <TwitterOutlined
+                                onClick={() => handleLinkCreation('Twitter', 'http://twitter.com', index)}
+                            />
+                        )}
+                    </div>
+                ))}
             </div>
         </Content>
     );
 };
 
 UserProfile.propTypes = {
-<<<<<<< HEAD
     currentInterface: PropTypes.string.isRequired,
-=======
-    currentInterface: PropTypes.string.isRequired, // Ensure currentInterface is required
->>>>>>> huy
 };
 
 export default UserProfile;

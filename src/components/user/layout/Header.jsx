@@ -22,7 +22,7 @@ const UserHeader = ({ onInterfaceChange }) => {
 
     const menu = (
         <Menu>
-            <Menu.Item key="profile">
+            <Menu.Item key="profile" className="custom-menu-item">
                 <a href="/user/personal-info">Thông tin cá nhân</a>
             </Menu.Item>
             <Menu.Item key="logout" onClick={handleLogout}>

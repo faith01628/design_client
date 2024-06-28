@@ -185,6 +185,18 @@
     background-color: #3e5942;
 }
 
+.infoFormLayout {
+    height: 91.4vh;
+}
+
+.infoFormLayout h2 {
+    margin-top: -12px;
+}
+
+.form-group {
+    margin-bottom: 7px;
+}
+
 /* Các điều chỉnh cho kích thước màn hình */
 @media (max-width: 1024px) {
     .header-container {

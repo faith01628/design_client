@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { FiArrowLeft } from 'react-icons/fi'; // Import icon từ react-icons
 import LayoutUser from './LayoutUser';
 
 const PersonalInfo = ({ accessToken }) => {
@@ -111,7 +112,6 @@ const PersonalInfo = ({ accessToken }) => {
         });
 
         try {
-<<<<<<< HEAD
             let apiUrl = 'http://192.168.10.156:3000/createprofile';
             let method = 'POST';
 
@@ -122,10 +122,6 @@ const PersonalInfo = ({ accessToken }) => {
 
             const response = await fetch(apiUrl, {
                 method: method,
-=======
-            const response = await fetch('http://192.168.10.156:3000/createprofile', {
-                method: 'POST',
->>>>>>> huy
                 headers: {
                     'Authorization': `Bearer ${token}`
                 },
@@ -147,15 +143,20 @@ const PersonalInfo = ({ accessToken }) => {
 
     return (
         <LayoutUser accessToken={accessToken}>
-            <div className="container">
+            <div className="container infoFormLayout">
+                <div className="mb-3">
+                    <button className="btn btn-link" onClick={() => navigate(-1)}>
+                        <FiArrowLeft className="mr-1" /> Quay lại
+                    </button>
+                </div>
                 <h2>Thông tin cá nhân</h2>
                 <form onSubmit={handleSubmit} encType='multipart/form-data'>
                     <div className="form-group">
-                        <label>avata</label>
+                        <label>Avatar</label>
                         <input type="file" className="form-control" onChange={(e) => handleFileChange(e, setAvata)} />
                     </div>
                     <div className="form-group">
-                        <label>Background avata</label>
+                        <label>Background Avatar</label>
                         <input type="file" className="form-control" onChange={(e) => handleFileChange(e, setBackgroundavata)} />
                     </div>
                     <div className="form-group">
@@ -179,7 +180,7 @@ const PersonalInfo = ({ accessToken }) => {
                         <textarea className="form-control" value={introduce} onChange={(e) => setIntroduce(e.target.value)} required></textarea>
                     </div>
                     <div className="form-group">
-                        <button type="submit" className="btn btn-primary">Submit</button>
+                        <button type="submit" className="btn btn-primary">Xác Nhận</button>
                     </div>
                 </form>
             </div>
