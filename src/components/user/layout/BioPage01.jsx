@@ -1,9 +1,19 @@
 import { useEffect, useState } from 'react';
+<<<<<<< HEAD
 import { Layout, Typography, Row, Col, Avatar, Button, Modal, Input, Select, Popconfirm, message } from 'antd';
 import { UserOutlined, MinusOutlined, DeleteOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import '../../../assets/css/user/index.css';
+=======
+import { Layout, Typography, Row, Col, Avatar, Button } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import axios from 'axios';
+import PropTypes from 'prop-types';
+import '../../../assets/css/user/index.css'; // Ensure the correct path
+import '../../../assets/css/user/bioPage01.scss';
+import ActionProfile from '../ModalButton';
+>>>>>>> huy
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -151,6 +161,7 @@ const UserProfile = ({ currentInterface }) => {
                             />
                         </div>
                     </Col>
+<<<<<<< HEAD
 
                     <Col xs={24} sm={12} md={8} className="info-col">
                         <Button className="profile-button" block onClick={showModal}>
@@ -166,6 +177,20 @@ const UserProfile = ({ currentInterface }) => {
                         <Button className="profile-button" block>
                             Review
                         </Button>
+=======
+                    <Col span={24} className="info-col">
+                        <div className='profile-button-container'>
+                            <Button className="profile-button" block>
+                                About Me
+                            </Button>
+                            <Button className="profile-button" block>
+                                Portfolio
+                            </Button>
+                            <Button className="profile-button" block>
+                                Review
+                            </Button>
+                        </div>
+>>>>>>> huy
                     </Col>
                 </Row>
                 <Modal title="About Me" visible={isModalVisible} onCancel={handleCancel} footer={null}>
@@ -234,12 +259,19 @@ const UserProfile = ({ currentInterface }) => {
                     </Select>
                 </Modal>
             </div>
+            <div className='action-container'>
+                <ActionProfile />
+            </div>
         </Content>
     );
 };
 
 UserProfile.propTypes = {
+<<<<<<< HEAD
     currentInterface: PropTypes.string.isRequired,
+=======
+    currentInterface: PropTypes.string.isRequired, // Ensure currentInterface is required
+>>>>>>> huy
 };
 
 export default UserProfile;

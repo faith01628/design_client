@@ -11,6 +11,7 @@
     /* Màu chữ */
 }
 
+
 .logo {
     display: flex;
     align-items: center;
@@ -45,19 +46,22 @@
     margin-right: 20px;
 }
 
+
 .use-this {
     color: white;
-    background: #4f6f52;
-    /* Màu nền nút sử dụng giao diện */
+    /* Màu chữ */
+    background: none;
     border: none;
-    padding: 10px 20px;
     cursor: pointer;
+    margin-right: 10px;
+    font-size: 16px;
+    line-height: 1.5;
     transition: background 0.3s ease;
 }
 
 .use-this:hover {
-    background: rgba(25, 255, 255, 0.8);
-    /* Màu nền khi hover */
+    background: rgb(255, 255, 255) !important;
+    border-radius: 5px;
 }
 
 .maticon {
@@ -111,7 +115,8 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: 24px auto;
     width: 100%;
-    max-width: 600px; /* Điều chỉnh độ rộng tối đa của profile container */
+    max-width: 600px;
+    /* Điều chỉnh độ rộng tối đa của profile container */
     margin-left: auto;
     margin-right: auto;
 }
@@ -156,15 +161,24 @@
     margin: 24px 0;
 }
 
-.profile-button {
+.profile-button-container {
+    justify-content: space-around !important;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 15px auto;
+    height: 36vh;
+}
+
+.profile-button {
     font-size: 18px;
-    padding: 12px;
+    padding: 12px 120px;
     background-color: #4f6f52;
     color: white;
     border: none;
     border-radius: 8px;
     transition: background-color 0.3s ease;
+    margin-bottom: 25px;
 }
 
 .profile-button:hover {
@@ -195,7 +209,8 @@
 
     .profile-container {
         padding: 20px !important;
-        max-width: 500px !important; /* Điều chỉnh độ rộng tối đa của profile container cho tablet */
+        max-width: 500px !important;
+        /* Điều chỉnh độ rộng tối đa của profile container cho tablet */
     }
 
     .profile-container .title {
@@ -223,10 +238,11 @@
         flex-direction: column;
         align-items: center;
     }
-    
+
     .profile-container {
         padding: 16px !important;
-        max-width: 400px !important; /* Điều chỉnh độ rộng tối đa của profile container cho mobile */
+        max-width: 400px !important;
+        /* Điều chỉnh độ rộng tối đa của profile container cho mobile */
     }
 
     .profile-container .title {

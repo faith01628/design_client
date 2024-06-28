@@ -111,6 +111,7 @@ const PersonalInfo = ({ accessToken }) => {
         });
 
         try {
+<<<<<<< HEAD
             let apiUrl = 'http://192.168.10.156:3000/createprofile';
             let method = 'POST';
 
@@ -121,6 +122,10 @@ const PersonalInfo = ({ accessToken }) => {
 
             const response = await fetch(apiUrl, {
                 method: method,
+=======
+            const response = await fetch('http://192.168.10.156:3000/createprofile', {
+                method: 'POST',
+>>>>>>> huy
                 headers: {
                     'Authorization': `Bearer ${token}`
                 },
