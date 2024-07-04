@@ -37,7 +37,7 @@ const Sidebar = () => {
                 navigate('/admin/user-manager');
                 break;
             case '3':
-                navigate('/todo');
+                navigate('/admin/bio-manager');
                 break;
             case '4':
                 navigate('/my-orders');
@@ -84,7 +84,7 @@ const Sidebar = () => {
                     {
                         key: '3',
                         icon: <OrderedListOutlined />,
-                        label: 'ToDo',
+                        label: 'Bio Manager',
                     },
                     {
                         key: '4',

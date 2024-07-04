@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Layout } from 'antd';
 import UserHeader from './layout/Header'; // Đảm bảo đường dẫn và tên file chính xác
 import PropTypes from 'prop-types';
+import '../../assets/css/user/index.css';
 
 const { Content } = Layout;
 

@@ -11,10 +11,12 @@
     /* Màu chữ */
 }
 
+.content {
+    padding: 0;
+}
 
 .logo {
-    display: flex;
-    align-items: center;
+    color: #ffffff;
     margin-left: 20px;
 }
 
@@ -79,7 +81,8 @@
 
 .avatar-col {
     position: relative;
-    overflow: hidden; /* Đảm bảo không có overflow khi sử dụng absolute positioning */
+    overflow: hidden;
+    /* Đảm bảo không có overflow khi sử dụng absolute positioning */
 }
 
 .avatar-background {
@@ -96,16 +99,19 @@
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Đảm bảo hình ảnh phủ đầy khu vực background */
+    object-fit: cover;
+    /* Đảm bảo hình ảnh phủ đầy khu vực background */
 }
 
 .avatar-container {
     position: relative;
-    z-index: 1; /* Đặt z-index để avatar-container nằm trên */
+    z-index: 1;
+    /* Đặt z-index để avatar-container nằm trên */
 }
 
 .avatar-container .ant-avatar {
-    position: relative; /* Đặt lại về relative để nó không bị đẩy ra khỏi flow */
+    position: relative;
+    /* Đặt lại về relative để nó không bị đẩy ra khỏi flow */
 }
 
 .profile-container {

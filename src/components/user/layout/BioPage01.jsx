@@ -1,15 +1,37 @@
 import { useEffect, useState } from 'react';
-import { Layout, Typography, Row, Col, Avatar, Button, Select, message, Modal, Input, Popconfirm } from 'antd';
-import { UserOutlined, MinusOutlined, DeleteOutlined, FacebookOutlined, InstagramOutlined, TikTokOutlined, YoutubeOutlined, TwitterOutlined } from '@ant-design/icons';
+import { Layout, Typography, Row, Col, Avatar, Button, Modal, Input, Popconfirm, Select, message } from 'antd';
+import { UserOutlined, MinusOutlined, DeleteOutlined } from '@ant-design/icons';
+import { FaFacebook, FaInstagram, FaYoutube, FaTwitter, FaTiktok } from 'react-icons/fa';
+import SketchPicker from 'react-color';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import '../../../assets/css/user/index.css'; // Ensure the correct path
-import '../../../assets/css/user/bioPage01.scss';
 import ActionProfile from '../ModalButton';
+import '../../../assets/css/user/index.css';
 
 const { Content } = Layout;
 const { Title } = Typography;
-const { Option } = Select;
+
+const IconComponent = ({ title }) => {
+    switch (title.toLowerCase()) {
+        case 'facebook':
+            return <FaFacebook />;
+        case 'instagram':
+            return <FaInstagram />;
+        case 'youtube':
+            return <FaYoutube />;
+        case 'twitter':
+            return <FaTwitter />;
+        case 'tiktok':
+            return <FaTiktok />;
+        default:
+            return null;
+    }
+};
+
+IconComponent.propTypes = {
+    title: PropTypes.string.isRequired,
+};
+
 
 const UserProfile = ({ currentInterface }) => {
     const [profile, setProfile] = useState({
@@ -24,12 +46,22 @@ const UserProfile = ({ currentInterface }) => {
     const [additionalInfo, setAdditionalInfo] = useState([]);
     const [availableLabels, setAvailableLabels] = useState([]);
     const [profileId, setProfileId] = useState(null); // State to store profileId
+    const [links, setLinks] = useState([]); // State to store links and icons
     const [linkCount, setLinkCount] = useState(0); // State to count number of links
+    const [backgroundColor, setBackgroundColor] = useState('#ffffff'); // Màu nền mặc định là trắng
+    const [colorModalVisible, setColorModalVisible] = useState(false); // Trạng thái hiển thị của Modal chỉnh màu
+
 
     useEffect(() => {
         fetchProfile();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (profileId) {
+            fetchLinks(profileId);
+        }
+    }, [profileId]);
 
     const fetchProfile = async () => {
         const token = localStorage.getItem('accessToken');
@@ -49,8 +81,6 @@ const UserProfile = ({ currentInterface }) => {
             });
             const data = response.data;
 
-            console.log(data);
-
             setProfile({
                 fullname: data.data.fullname,
                 phone: data.data.phone,
@@ -59,16 +89,51 @@ const UserProfile = ({ currentInterface }) => {
                 backgroundavatar: data.data.backgroundavata,
             });
 
-            setProfileId(data.data.id); // Save profileId from response into state
+            if (data.data.id) {
+                setProfileId(data.data.id); // Save profileId from response into state
+            } else {
+                console.error('Không tìm thấy profileId trong phản hồi API.');
+            }
 
             // Get labels from profile data
-            const labelsFromProfile = Object.keys(data.data).filter(key => key !== 'avata' && key !== 'backgroundavata' && !key.includes('id'));
+            const labelsFromProfile = Object.keys(data.data).filter(key => key !== 'avatar' && key !== 'backgroundavatar' && !key.includes('id'));
             // Filter labels not in modal
             const labelsNotInModal = labelsFromProfile.filter(label => !Object.keys(profile).includes(label));
             setAvailableLabels(labelsNotInModal);
 
         } catch (error) {
             console.error('Lỗi khi lấy thông tin hồ sơ:', error);
+        }
+    };
+
+    const fetchLinks = async (profileId) => {
+        if (!profileId) {
+            console.error('profileId không tồn tại.');
+            return;
+        }
+
+        const token = localStorage.getItem('accessToken');
+        try {
+            const response = await fetch(`http://192.168.10.156:3000/link/${profileId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            if (data.result === 1 && Array.isArray(data.data)) {
+                setLinks(data.data); // Cập nhật links với dữ liệu từ phản hồi API
+            } else {
+                console.error('API returned invalid data:', data);
+            }
+        } catch (error) {
+            console.error('Lỗi khi lấy thông tin link:', error);
         }
     };
 
@@ -89,6 +154,14 @@ const UserProfile = ({ currentInterface }) => {
                 setAdditionalInfo(newInfo);
             }
         });
+    };
+
+    const showColorModal = () => {
+        setColorModalVisible(true);
+    };
+
+    const handleColorModalCancel = () => {
+        setColorModalVisible(false);
     };
 
     const removeInput = (index) => {
@@ -138,39 +211,67 @@ const UserProfile = ({ currentInterface }) => {
         setAdditionalInfo(newInfo);
     };
 
-    const handleLinkCreation = async (title, link, indexid) => {
+    const handleLinkCreation = async (title, link) => {
         try {
             const token = localStorage.getItem('accessToken');
-            const response = await axios.post(
-                'http://192.168.10.156:3000/createlink',
-                {
-                    profileid: profileId,
-                    title: title,
-                    link: link,
-                    indexid: indexid, // Include indexid in the request
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                }
-            );
+            const existingLink = links.find(l => l.title === title); // Tìm link đã tồn tại với title
 
-            if (response.status === 200) {
-                message.success('Đã tạo đường link thành công');
-                setLinkCount(prevCount => prevCount + 1); // Increment link count after successful creation
+            if (existingLink) {
+                // Nếu link đã tồn tại, thực hiện cập nhật
+                const response = await axios.put(
+                    `http://192.168.10.156:3000/updatelink/${existingLink.id}`,
+                    {
+                        profileid: profileId,
+                        title: title,
+                        link: link,
+                        indexid: existingLink.indexid, // Giữ nguyên indexid cũ
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                );
+                if (response.status === 200) {
+                    message.success('Đã cập nhật đường link thành công');
+                    fetchLinks(profileId); // Refresh links after update
+                } else {
+                    message.error('Lỗi khi cập nhật đường link:', response.statusText);
+                }
             } else {
-                message.error('Lỗi khi tạo đường link:', response.statusText);
+                // Nếu link không tồn tại, thực hiện tạo mới
+                const response = await axios.post(
+                    'http://192.168.10.156:3000/createlink',
+                    {
+                        profileid: profileId,
+                        title: title,
+                        link: link,
+                        indexid: linkCount + 4, // Incremental indexid starting from 4
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                );
+                if (response.status === 200) {
+                    message.success('Đã tạo đường link thành công');
+                    setLinkCount(prevCount => prevCount + 1); // Increment link count after successful creation
+                    fetchLinks(profileId); // Refresh links after creation
+                } else {
+                    message.error('Lỗi khi tạo đường link:', response.statusText);
+                }
             }
         } catch (error) {
-            console.error('Lỗi khi tạo đường link:', error.message);
+            console.error('Lỗi khi tạo hoặc cập nhật đường link:', error.message);
         }
     };
 
     return (
         <Content className="content">
-            <div className="profile-container">
+            <div className="profile-container" style={{ backgroundColor, transition: 'background-color 0.3s ease' }}>
                 <Row gutter={[16, 16]}>
                     <Col span={24} className="avatar-col">
                         <div className="avatar-background">
@@ -185,119 +286,104 @@ const UserProfile = ({ currentInterface }) => {
                         </div>
                     </Col>
                     <Col span={24} className="info-col">
-                        <div className='profile-button-container'>
-                            <Button className="profile-button" block onClick={showModal}>
-                                About Me
-                            </Button>
-                            <Button className="profile-button" block>
-                                Portfolio
-                            </Button>
-                            <Button className="profile-button" block>
-                                Review
-                            </Button>
+                        <Title level={3} className="name-title">{profile.fullname}</Title>
+                        <p className="job-title">INTERIOR DESIGNER</p>
+                        <Button className="profile-button" block onClick={showModal}>ABOUT ME</Button>
+                        <Button className="profile-button" block>PORTFOLIO</Button>
+                        <Button className="profile-button" block>WEBSITE</Button>
+                        <Button className="profile-button" block>REVIEWS</Button>
+                    </Col>
+                    <Col span={24} className="info-col">
+                        <div className="contact-section">
+                            <Title level={5}>Liên hệ</Title>
+                            <div className="social-icons">
+                                {Array.isArray(links) && links.length > 0 ? (
+                                    links.map((link, index) => (
+                                        <Button
+                                            key={index}
+                                            icon={<IconComponent title={link.title} />}
+                                            onClick={() => window.open(link.link, '_blank')}
+                                            style={{ marginRight: '10px' }}
+                                        />
+                                    ))
+                                ) : (
+                                    <p>Không có link nào được tìm thấy.</p>
+                                )}
+                            </div>
                         </div>
                     </Col>
                 </Row>
-                <Modal title="About Me" visible={isModalVisible} onCancel={handleCancel} footer={null}>
-                    <Title level={3} className="title">{profile.fullname}</Title>
+            </div>
+            <Button onClick={showColorModal}>Chỉnh màu nền</Button>
+            <ActionProfile
+                profileId={profileId}
+                onLinkCreation={handleLinkCreation}
+                linkCount={linkCount}
+            />
+            <Modal title="About Me" visible={isModalVisible} onCancel={handleCancel} footer={null}>
+                <Title level={3} className="title">{profile.fullname}</Title>
 
-                    <div className="form-group">
-                        <label className="form-label">Phone:</label>
+                <div className="form-group">
+                    <label className="form-label">Phone:</label>
+                    <Input
+                        className="form-control"
+                        value={profile.phone}
+                        readOnly
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label className="form-label">Address:</label>
+                    <Input
+                        className="form-control"
+                        value={profile.address}
+                        readOnly
+                    />
+                </div>
+
+                {additionalInfo.map((info, index) => (
+                    <div key={index} style={{ marginTop: '10px' }}>
+                        <label className="form-label">{info.label}:</label>
                         <Input
                             className="form-control"
-                            value={profile.phone}
-                            readOnly
+                            value={info.value}
+                            onChange={(e) => handleInputChange(index, 'value', e.target.value)}
                         />
-                    </div>
-
-                    <div className="form-group">
-                        <label className="form-label">Address:</label>
-                        <Input
-                            className="form-control"
-                            value={profile.address}
-                            readOnly
-                        />
-                    </div>
-
-                    {additionalInfo.map((info, index) => (
-                        <div key={index} style={{ marginTop: '10px' }}>
-                            <label className="form-label">{info.label}:</label>
-                            <Input
-                                className="form-control"
-                                value={info.value}
-                                onChange={(e) => handleInputChange(index, 'value', e.target.value)}
-                            />
-                            <Popconfirm
-                                title="Bạn có chắc muốn xóa?"
-                                onConfirm={() => handleRemoveItem(index)}
-                                onCancel={cancelDelete}
-                                okText="Có"
-                                cancelText="Không"
-                                placement="topRight"
-                            >
-                                <Button
-                                    icon={<MinusOutlined />}
-                                    style={{ marginLeft: '10px' }}
-                                />
-                            </Popconfirm>
-                        </div>
-                    ))}
-
-                    <Button
-                        icon={<DeleteOutlined />}
-                        onClick={handleRemoveAll}
-                        style={{ marginTop: '10px' }}
-                    >
-                        Xóa toàn bộ
-                    </Button>
-
-                    <Select
-                        placeholder="Chọn label để thêm"
-                        style={{ width: '100%', marginTop: '10px' }}
-                        mode="multiple"
-                        allowClear={false}
-                        onChange={addInput}
-                    >
-                        {availableLabels.map((label, index) => (
-                            <Option key={index} value={label}>{label}</Option>
-                        ))}
-                    </Select>
-                </Modal>
-            </div>
-            <div className='action-container'>
-                <ActionProfile profileId={profileId} handleLinkCreation={handleLinkCreation} />
-            </div>
-            <div className="review-icons-container">
-                {[...Array(linkCount + 4)].map((_, index) => (
-                    <div key={index} className="review-icon">
-                        {index === 4 && (
-                            <FacebookOutlined
-                                onClick={() => handleLinkCreation('Facebook', 'http://facebook.com', index)}
-                            />
-                        )}
-                        {index === 5 && (
-                            <InstagramOutlined
-                                onClick={() => handleLinkCreation('Instagram', 'http://instagram.com', index)}
-                            />
-                        )}
-                        {index === 6 && (
-                            <TikTokOutlined
-                                onClick={() => handleLinkCreation('TikTok', 'http://tiktok.com', index)}
-                            />
-                        )}
-                        {index === 7 && (
-                            <YoutubeOutlined
-                                onClick={() => handleLinkCreation('Youtube', 'http://youtube.com', index)}
-                            />
-                        )}
-                        {index === 8 && (
-                            <TwitterOutlined
-                                onClick={() => handleLinkCreation('Twitter', 'http://twitter.com', index)}
-                            />
-                        )}
+                        <Popconfirm
+                            title="Bạn có chắc chắn muốn xóa?"
+                            onConfirm={() => handleRemoveItem(index)}
+                            onCancel={cancelDelete}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <Button type="link" icon={<MinusOutlined />} />
+                        </Popconfirm>
                     </div>
                 ))}
-            </div>
+
+                <div style={{ marginTop: '10px' }}>
+                    <Select
+                        placeholder="Select a label"
+                        style={{ width: '50%' }}
+                        onChange={(value) => addInput([value])}
+                        options={availableLabels.map(label => ({ label, value: label }))}
+                    />
+                    <Button type="link" icon={<DeleteOutlined />} onClick={handleRemoveAll} />
+                </div>
+            </Modal>
+
+            <Modal
+                title="Chỉnh màu nền"
+                visible={colorModalVisible}
+                onCancel={handleColorModalCancel}
+                footer={null}
+            >
+                <SketchPicker
+                    color={backgroundColor}
+                    onChangeComplete={(color) => setBackgroundColor(color.hex)}
+                />
+            </Modal>
+
         </Content>
     );
 };

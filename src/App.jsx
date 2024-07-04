@@ -11,6 +11,8 @@ import Register from './components/Register';
 import LayoutUser from './components/user/LayoutUser';
 import BioPage from './components/user/layout/BioPage01';
 import PersonalInfor from './components/user/PersonalInfor';
+import BioManager from './components/admin/BioManager';
+import Home from './components/user/Home'; // Import trang home
 
 const Admin = ({ accessToken }) => {
     return (
@@ -64,6 +66,7 @@ const App = () => {
     return (
         <Router>
             <Routes>
+                <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login onLogin={handleLogin} />} />
                 <Route path="/register" element={<Register />} />
                 <Route
@@ -73,6 +76,10 @@ const App = () => {
                 <Route
                     path="/admin/user-manager"
                     element={isLoggedIn && userRole === 'admin' ? <UserManager accessToken={accessToken} /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/admin/bio-manager"
+                    element={isLoggedIn && userRole === 'admin' ? <BioManager accessToken={accessToken} /> : <Navigate to="/login" />}
                 />
                 <Route
                     path="/user"

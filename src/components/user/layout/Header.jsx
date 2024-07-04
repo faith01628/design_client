@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Dropdown, Menu } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { FaLeaf } from 'react-icons/fa';
@@ -7,6 +7,14 @@ import '../../../assets/css/user/index.css'; // Đảm bảo đúng đường d�
 
 const UserHeader = ({ onInterfaceChange }) => {
     const [currentInterface, setCurrentInterface] = useState('desktop');
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+            setIsLoggedIn(true);
+        }
+    }, []);
 
     const handleInterfaceChange = (interfaceType) => {
         setCurrentInterface(interfaceType);
@@ -22,20 +30,28 @@ const UserHeader = ({ onInterfaceChange }) => {
 
     const menu = (
         <Menu>
-            <Menu.Item key="profile" className="custom-menu-item">
-                <a href="/user/personal-info">Thông tin cá nhân</a>
-            </Menu.Item>
-            <Menu.Item key="logout" onClick={handleLogout}>
-                Đăng xuất
-            </Menu.Item>
+            {isLoggedIn ? (
+                <>
+                    <Menu.Item key="profile" className="custom-menu-item">
+                        <a href="/user/personal-info">Thông tin cá nhân</a>
+                    </Menu.Item>
+                    <Menu.Item key="logout" onClick={handleLogout}>
+                        Đăng xuất
+                    </Menu.Item>
+                </>
+            ) : (
+                <Menu.Item key="login" className="custom-menu-item">
+                    <a href="/login">Đăng nhập</a>
+                </Menu.Item>
+            )}
         </Menu>
     );
 
     return (
         <div className="header-container">
-            <div className="logo">
+            <a className="logo" href="http://localhost:5173/">
                 <FaLeaf />
-            </div>
+            </a>
 
             <div className="navbar">
                 <Button className={`nav-button ${currentInterface === 'desktop' ? 'active' : ''}`} onClick={() => handleInterfaceChange('desktop')}>
