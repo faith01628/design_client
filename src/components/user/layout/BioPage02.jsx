@@ -34,7 +34,7 @@ IconComponent.propTypes = {
 };
 
 
-const UserProfile = ({ currentInterface }) => {
+const UserProfile02 = ({ currentInterface }) => {
     const [profile, setProfile] = useState({
         fullname: '',
         phone: '',
@@ -391,8 +391,8 @@ const UserProfile = ({ currentInterface }) => {
     );
 };
 
-UserProfile.propTypes = {
+UserProfile02.propTypes = {
     currentInterface: PropTypes.string.isRequired,
 };
 
-export default UserProfile;
+export default UserProfile02;

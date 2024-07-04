@@ -38,7 +38,7 @@ function Login({ onLogin }) {
                     if (data.data.user.role === 'admin') {
                         navigate('/admin');
                     } else {
-                        navigate('/user');
+                        navigate('/');
                     }
                 } else {
                     setError('Vai trò người dùng không hợp lệ.');

@@ -9,10 +9,11 @@ import MainContent from './components/admin/MainContent';
 import SideContent from './components/admin/SideContent';
 import Register from './components/Register';
 import LayoutUser from './components/user/LayoutUser';
-import BioPage from './components/user/layout/BioPage01';
 import PersonalInfor from './components/user/PersonalInfor';
 import BioManager from './components/admin/BioManager';
-import Home from './components/user/Home'; // Import trang home
+import Home from './components/user/Home';
+import UserProfile02 from './components/user/layout/BioPage02';
+import UserProfile from './components/user/layout/BioPage01';
 
 const Admin = ({ accessToken }) => {
     return (
@@ -30,7 +31,7 @@ Admin.propTypes = {
 const User = ({ accessToken }) => {
     return (
         <LayoutUser accessToken={accessToken}>
-            <BioPage />
+            <Home />
         </LayoutUser>
     );
 };
@@ -58,10 +59,33 @@ const App = () => {
     };
 
     useEffect(() => {
-        setIsLoggedIn(localStorage.getItem('isLoggedIn') === 'true');
-        setUserRole(localStorage.getItem('userRole'));
-        setAccessToken(localStorage.getItem('accessToken'));
+        const checkLoginStatus = () => {
+            const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const role = localStorage.getItem('userRole');
+            const token = localStorage.getItem('accessToken');
+
+            setIsLoggedIn(loggedIn);
+            setUserRole(role);
+            setAccessToken(token);
+        };
+
+        checkLoginStatus();
     }, []);
+
+    const RequireAuth = ({ children, role }) => {
+        if (!isLoggedIn) {
+            return <Navigate to="/login" />;
+        }
+        if (role && userRole !== role) {
+            return <Navigate to="/login" />;
+        }
+        return children;
+    };
+
+    RequireAuth.propTypes = {
+        children: PropTypes.node.isRequired,
+        role: PropTypes.string,
+    };
 
     return (
         <Router>
@@ -71,26 +95,53 @@ const App = () => {
                 <Route path="/register" element={<Register />} />
                 <Route
                     path="/admin"
-                    element={isLoggedIn && userRole === 'admin' ? <Admin accessToken={accessToken} /> : <Navigate to="/login" />}
+                    element={
+                        <RequireAuth role="admin">
+                            <Admin accessToken={accessToken} />
+                        </RequireAuth>
+                    }
                 />
                 <Route
                     path="/admin/user-manager"
-                    element={isLoggedIn && userRole === 'admin' ? <UserManager accessToken={accessToken} /> : <Navigate to="/login" />}
+                    element={
+                        <RequireAuth role="admin">
+                            <UserManager accessToken={accessToken} />
+                        </RequireAuth>
+                    }
                 />
                 <Route
                     path="/admin/bio-manager"
-                    element={isLoggedIn && userRole === 'admin' ? <BioManager accessToken={accessToken} /> : <Navigate to="/login" />}
+                    element={
+                        <RequireAuth role="admin">
+                            <BioManager accessToken={accessToken} />
+                        </RequireAuth>
+                    }
                 />
                 <Route
-                    path="/user"
-                    element={isLoggedIn && userRole === 'user' ? <User accessToken={accessToken} /> : <Navigate to="/login" />}
+                    path="/user/bio01"
+                    element={
+                        <RequireAuth role="user">
+                            <UserProfile accessToken={accessToken} />
+                        </RequireAuth>
+                    }
+                />
+                <Route
+                    path="/user/bio02"
+                    element={
+                        <RequireAuth role="user">
+                            <UserProfile02 accessToken={accessToken} />
+                        </RequireAuth>
+                    }
                 />
                 <Route
                     path="/user/personal-info"
-                    element={isLoggedIn && userRole === 'user' ? <PersonalInfor accessToken={accessToken} /> : <Navigate to="/login" />}
+                    element={
+                        <RequireAuth role="user">
+                            <PersonalInfor accessToken={accessToken} />
+                        </RequireAuth>
+                    }
                 />
                 <Route path="*" element={<Navigate to="/login" />} />
-
             </Routes>
         </Router>
     );

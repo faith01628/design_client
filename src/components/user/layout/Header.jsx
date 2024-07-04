@@ -25,6 +25,7 @@ const UserHeader = ({ onInterfaceChange }) => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('userRole');
         localStorage.removeItem('userName');
+        setIsLoggedIn(false);
         window.location.href = '/login';
     };
 

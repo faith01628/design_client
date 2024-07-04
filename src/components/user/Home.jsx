@@ -13,10 +13,10 @@ const Home = () => {
   useEffect(() => {
     const fetchBios = async () => {
       try {
-
         const response = await fetch(`${serverUrl}/bio`, {
           method: "GET",
           headers: {
+            // Thêm headers nếu cần
           },
         });
 
@@ -53,7 +53,7 @@ const Home = () => {
         ) : (
           <div style={{ display: 'flex', flexWrap: 'wrap' }}>
             {bios.map(bio => (
-              <Link key={bio._id} to={`/bio`} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <Link key={bio.id} to={`/user/bio01`} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <Card
                   style={{ width: 300, margin: '10px' }}
                   cover={<img alt={bio.title} src={`${serverUrl}/${bio.imgbio}`} />}
