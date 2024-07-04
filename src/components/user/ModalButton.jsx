@@ -21,7 +21,7 @@ const ActionProfile = ({ profileId }) => {
         if (profileId) {
             fetchLinks();
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [profileId]);
 
     const fetchLinks = async () => {

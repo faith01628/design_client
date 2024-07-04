@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Card, Spin, Alert } from 'antd';
 import LayoutUser from './LayoutUser';
 import { Link } from 'react-router-dom'; // Import Link từ React Router
+import '../../assets/css/user/home.scss';
 
 const Home = () => {
   const serverUrl = 'http://192.168.10.156:3000';
@@ -45,7 +46,7 @@ const Home = () => {
 
   return (
     <LayoutUser>
-      <div style={{ padding: '20px' }}>
+      <div style={{ padding: '20px', height: '92.2vh' }}>
         {loading ? (
           <Spin size="large" />
         ) : error ? (
@@ -53,13 +54,18 @@ const Home = () => {
         ) : (
           <div style={{ display: 'flex', flexWrap: 'wrap' }}>
             {bios.map(bio => (
+<<<<<<< Updated upstream
               <Link key={bio.id} to={`/user/bio01`} style={{ textDecoration: 'none', color: 'inherit' }}>
+=======
+              <Link key={bio.id} to={`/user`} style={{ textDecoration: 'none', color: 'inherit' }}>
+>>>>>>> Stashed changes
                 <Card
-                  style={{ width: 300, margin: '10px' }}
+                  style={{ width: 300, height: 400, margin: '10px' }}
                   cover={<img alt={bio.title} src={`${serverUrl}/${bio.imgbio}`} />}
                 >
-                  <Card.Meta title={bio.title} />
+                  {/* <Card.Meta title={bio.title} /> */}
                 </Card>
+                <div className='title' >{bio.title}</div>
               </Link>
             ))}
           </div>
