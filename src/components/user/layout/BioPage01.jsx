@@ -290,10 +290,10 @@ const UserProfile = ({ currentInterface }) => {
                         <Col span={24} className="info-col">
                             <Title level={3} className="name-title">{profile.fullname}</Title>
                             <p className="job-title">INTERIOR DESIGNER</p>
-                            <Button className="profile-button" block onClick={showModal}>ABOUT ME</Button>
-                            <Button className="profile-button" block>PORTFOLIO</Button>
-                            <Button className="profile-button" block>WEBSITE</Button>
-                            <Button className="profile-button" block>REVIEWS</Button>
+                            <Button className="profile-buttons" block onClick={showModal}>ABOUT ME</Button>
+                            <Button className="profile-buttons" block>PORTFOLIO</Button>
+                            <Button className="profile-buttons" block>WEBSITE</Button>
+                            <Button className="profile-buttons" block>REVIEWS</Button>
                         </Col>
                         <Col span={24} className="info-col">
                             <div className="contact-section">
@@ -323,7 +323,15 @@ const UserProfile = ({ currentInterface }) => {
                     linkCount={linkCount}
                 />
                 <Modal title="About Me" visible={isModalVisible} onCancel={handleCancel} footer={null}>
-                    <Title level={3} className="title">{profile.fullname}</Title>
+
+                    <div className="form-group">
+                        <label className="form-label">Name:</label>
+                        <Input
+                            className="form-control"
+                            value={profile.fullname}
+                            readOnly
+                        />
+                    </div>
 
                     <div className="form-group">
                         <label className="form-label">Phone:</label>

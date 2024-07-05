@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Card, Spin, Alert } from 'antd';
 import LayoutUser from './LayoutUser';
 import { Link } from 'react-router-dom'; // Import Link từ React Router
+import '../../assets/css/user/home.scss';
 
 const Home = () => {
   const serverUrl = 'http://192.168.10.156:3000';
@@ -43,9 +44,18 @@ const Home = () => {
     fetchBios();
   }, []);
 
+  // Hàm kiểm tra title và xác định URL
+  const getUrlFromTitle = (title) => {
+    const match = title.match(/bio (\d+)/i); // Tìm "bio" theo sau là số
+    if (match && match[1]) {
+      return `/user/bio${match[1].padStart(2, '0')}`; // Tạo URL dạng /user/bio01, /user/bio02, ...
+    }
+    return '/user/bio01'; // URL mặc định nếu không tìm thấy pattern trong title
+  };
+
   return (
     <LayoutUser>
-      <div style={{ padding: '20px' }}>
+      <div style={{ padding: '20px', height: '91.5vh' }}>
         {loading ? (
           <Spin size="large" />
         ) : error ? (
@@ -53,13 +63,14 @@ const Home = () => {
         ) : (
           <div style={{ display: 'flex', flexWrap: 'wrap' }}>
             {bios.map(bio => (
-              <Link key={bio.id} to={`/user/bio01`} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <Link key={bio.id} to={getUrlFromTitle(bio.title)} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <Card
-                  style={{ width: 300, margin: '10px' }}
+                  style={{ width: 300, height: 400, margin: '10px' }}
                   cover={<img alt={bio.title} src={`${serverUrl}/${bio.imgbio}`} />}
                 >
-                  <Card.Meta title={bio.title} />
+                  {/* <Card.Meta title={bio.title} /> */}
                 </Card>
+                <div className='title'>{bio.title}</div>
               </Link>
             ))}
           </div>

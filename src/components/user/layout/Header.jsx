@@ -50,7 +50,7 @@ const UserHeader = ({ onInterfaceChange }) => {
 
     return (
         <div className="header-container">
-            <a className="logo" href="http://localhost:5173/">
+            <a className="logo_" href="http://localhost:5173/">
                 <FaLeaf />
             </a>
 
