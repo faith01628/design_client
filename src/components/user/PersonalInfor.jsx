@@ -132,7 +132,7 @@ const PersonalInfo = ({ accessToken }) => {
 
             if (response.status === 200) {
                 console.log('Cập nhật thông tin cá nhân thành công');
-                navigate('/user'); // Chuyển hướng đến trang thông tin người dùng
+                navigate(-1); // Chuyển hướng đến trang thông tin người dùng
             } else {
                 console.error('Lỗi khi cập nhật thông tin cá nhân:', response.statusText);
             }

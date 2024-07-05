@@ -13,26 +13,24 @@ const { Content } = Layout;
 const { Title } = Typography;
 
 const IconComponent = ({ title }) => {
-    switch (title.toLowerCase()) {
-        case 'facebook':
-            return <FaFacebook />;
-        case 'instagram':
-            return <FaInstagram />;
-        case 'youtube':
-            return <FaYoutube />;
-        case 'twitter':
-            return <FaTwitter />;
-        case 'tiktok':
-            return <FaTiktok />;
-        default:
-            return null;
-    }
+    return (
+        <div className="icon-wrapper">
+            {
+                {
+                    'facebook': <FaFacebook />,
+                    'instagram': <FaInstagram />,
+                    'youtube': <FaYoutube />,
+                    'twitter': <FaTwitter />,
+                    'tiktok': <FaTiktok />
+                }[title.toLowerCase()] || null
+            }
+        </div>
+    );
 };
 
 IconComponent.propTypes = {
     title: PropTypes.string.isRequired,
 };
-
 
 const UserProfile02 = ({ currentInterface }) => {
     const [profile, setProfile] = useState({
@@ -40,7 +38,6 @@ const UserProfile02 = ({ currentInterface }) => {
         phone: '',
         address: '',
         avatar: '',
-        backgroundavatar: '',
     });
 
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -52,10 +49,19 @@ const UserProfile02 = ({ currentInterface }) => {
     const [backgroundColor, setBackgroundColor] = useState('#ffffff'); // Màu nền mặc định là trắng
     const [colorModalVisible, setColorModalVisible] = useState(false); // Trạng thái hiển thị của Modal chỉnh màu
 
+    const username = localStorage.getItem('userName');
 
     useEffect(() => {
         fetchProfile();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        createBubbles();
+    
+        // Lắng nghe sự kiện khi window unload để lưu lại vị trí bong bóng
+        window.addEventListener('unload', saveBubblePositions);
+    
+        return () => {
+            window.removeEventListener('unload', saveBubblePositions);
+        };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -64,6 +70,49 @@ const UserProfile02 = ({ currentInterface }) => {
         }
     }, [profileId]);
 
+    const createBubbles = () => {
+        const container = document.querySelector('.profile-container');
+        const savedPositions = JSON.parse(localStorage.getItem('bubblePositions')) || [];
+    
+        for (let i = 0; i < 20; i++) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
+            const size = Math.random() * 50 + 20 + 'px';
+    
+            let left, top;
+            if (savedPositions.length > i) {
+                // Nếu có thông tin vị trí lưu trước đó, sử dụng vị trí đã lưu
+                left = savedPositions[i].left;
+                top = savedPositions[i].top;
+            } else {
+                // Nếu không có, tạo vị trí ngẫu nhiên mới
+                left = Math.random() * window.innerWidth + 'px';
+                top = Math.random() * window.innerHeight + 'px';
+            }
+    
+            bubble.style.width = size;
+            bubble.style.height = size;
+            bubble.style.left = left;
+            bubble.style.top = top;
+            container.appendChild(bubble);
+        }
+    };
+    
+    const saveBubblePositions = () => {
+        const bubbles = document.querySelectorAll('.bubble');
+        const positions = [];
+    
+        bubbles.forEach(bubble => {
+            positions.push({
+                left: bubble.style.left,
+                top: bubble.style.top
+            });
+        });
+    
+        // Lưu thông tin vị trí bong bóng vào localStorage
+        localStorage.setItem('bubblePositions', JSON.stringify(positions));
+    };
+    
     const fetchProfile = async () => {
         const token = localStorage.getItem('accessToken');
         const accountid = localStorage.getItem('id');
@@ -87,7 +136,6 @@ const UserProfile02 = ({ currentInterface }) => {
                 phone: data.data.phone,
                 address: data.data.address,
                 avatar: data.data.avata,
-                backgroundavatar: data.data.backgroundavata,
             });
 
             if (data.data.id) {
@@ -276,9 +324,7 @@ const UserProfile02 = ({ currentInterface }) => {
                 <div className="profile-container" style={{ backgroundColor, transition: 'background-color 0.3s ease' }}>
                     <Row gutter={[16, 16]}>
                         <Col span={24} className="avatar-col">
-                            <div className="avatar-background">
-                                <img className="background-avatar" src={`http://192.168.10.156:3000/${profile.backgroundavatar}`} alt="Background Avatar" />
-                            </div>
+                            <h2 className='title-profile-name'>PROFILE</h2>
                             <div className="avatar-container">
                                 <Avatar
                                     size={currentInterface === 'desktop' ? 120 : 120}
@@ -288,24 +334,24 @@ const UserProfile02 = ({ currentInterface }) => {
                             </div>
                         </Col>
                         <Col span={24} className="info-col">
-                            <Title level={3} className="name-title">{profile.fullname}</Title>
-                            <p className="job-title">INTERIOR DESIGNER</p>
-                            <Button className="profile-button" block onClick={showModal}>ABOUT ME</Button>
-                            <Button className="profile-button" block>PORTFOLIO</Button>
-                            <Button className="profile-button" block>WEBSITE</Button>
-                            <Button className="profile-button" block>REVIEWS</Button>
+                            <Title level={3} className="name-title-title">{profile.fullname}</Title>
+                            <p className="job-title">@{username}</p>
+                            <Button className="profile-button abt" block onClick={showModal}>ABOUT ME</Button>
+                            <Button className="profile-button ptf" block>PORTFOLIO</Button>
+                            <Button className="profile-button web" block>WEBSITE</Button>
+                            <Button className="profile-button rev" block>REVIEWS</Button>
                         </Col>
                         <Col span={24} className="info-col">
                             <div className="contact-section">
-                                <Title level={5}>Liên hệ</Title>
-                                <div className="social-icons">
+                                <div className="social-icons-icons">
                                     {Array.isArray(links) && links.length > 0 ? (
                                         links.map((link, index) => (
                                             <Button
                                                 key={index}
                                                 icon={<IconComponent title={link.title} />}
                                                 onClick={() => window.open(link.link, '_blank')}
-                                                style={{ marginRight: '10px' }}
+                                                style={{ marginRight: '15px' }}
+                                                className="icon-button" // Thêm lớp CSS mới
                                             />
                                         ))
                                     ) : (
@@ -323,7 +369,15 @@ const UserProfile02 = ({ currentInterface }) => {
                     linkCount={linkCount}
                 />
                 <Modal title="About Me" visible={isModalVisible} onCancel={handleCancel} footer={null}>
-                    <Title level={3} className="title">{profile.fullname}</Title>
+
+                    <div className="form-group">
+                        <label className="form-label">Name:</label>
+                        <Input
+                            className="form-control"
+                            value={profile.fullname}
+                            readOnly
+                        />
+                    </div>
 
                     <div className="form-group">
                         <label className="form-label">Phone:</label>

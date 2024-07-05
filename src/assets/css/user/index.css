@@ -15,9 +15,43 @@
     padding: 0;
 }
 
-.logo {
+.icon-wrapper {
+    display: inline-block;
+    width: 40px; /* Điều chỉnh kích thước theo nhu cầu của bạn */
+    height: 40px;
+    border-radius: 50%;
+    background-color: #1890ff; /* Màu nền của hình tròn */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white; /* Màu của icon */
+    margin-left: 5px;
+}
+
+.social-icons-icons .ant-btn {
+    border: none; /* Loại bỏ viền của button */
+    padding: 0; /* Loại bỏ padding */
+    background-color: transparent; /* Đặt nền của button là trong suốt */
+}
+
+.icon-wrapper svg {
+    width: 20px;
+    height: 20px;
+}
+
+.logo_ {
     color: #ffffff;
     margin-left: 20px;
+    font-size: 1.5rem;
+}
+
+.title-profile-name {
+    color: #b75ae2af !important;
+}
+
+.name-title-title {
+    font-size: 20px !important;
+    color: #b75ae2af !important;
 }
 
 .navbar {
@@ -110,21 +144,37 @@
 }
 
 .avatar-container .ant-avatar {
+    width: 170px !important;
+    height: 170px !important;
     position: relative;
-    /* Đặt lại về relative để nó không bị đẩy ra khỏi flow */
+    border: none;
 }
 
 .profile-container {
     background-color: #ffffff;
-    padding: 24px;
+    padding: 15px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: 24px auto;
     width: 100%;
     max-width: 600px;
-    /* Điều chỉnh độ rộng tối đa của profile container */
     margin-left: auto;
     margin-right: auto;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+}
+
+/* Bong bóng */
+.bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: #b75ae2af;
+    opacity: 0.7;
+    z-index: -1; /* Đặt z-index âm để đẩy các bong bóng xuống dưới cùng */
 }
 
 .profile-container .avatar-col {
@@ -132,9 +182,8 @@
 }
 
 .profile-container .avatar-container {
-    width: 120px;
-    height: 120px;
-    border: 4px solid #1890ff;
+    width: 170px;
+    height: 170px;
     border-radius: 50%;
     overflow: hidden;
     margin: 0 auto;
@@ -167,28 +216,51 @@
     margin: 24px 0;
 }
 
-.profile-button-container {
-    justify-content: space-around !important;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 15px auto;
-    height: 36vh;
-}
-
-.profile-button {
+.profile-buttons {
+    width: 20vw !important;
+    height: 6vh !important;
     font-size: 18px;
     padding: 12px 120px;
     background-color: #4f6f52;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 20px; /* Bo góc tròn hơn */
     transition: background-color 0.3s ease;
     margin-bottom: 25px;
+    box-shadow: 5px 5px 7px rgba(0, 0, 0, 0.5);
+}
+
+.profile-button {
+    width: 20vw !important;
+    height: 6vh !important;
+    font-size: 18px;
+    padding: 12px 120px;
+    color: white;
+    border: none;
+    border-radius: 20px; /* Bo góc tròn hơn */
+    transition: background-color 0.3s ease;
+    margin-bottom: 25px;
+    box-shadow: 5px 5px 7px rgba(0, 0, 0, 0.5);
 }
 
 .profile-button:hover {
     background-color: #3e5942;
+}
+
+.abt {
+    background-color: #1890ff;
+}
+
+.ptf {
+    background-color: #c860f8;
+}
+
+.web {
+    background-color: #f9c828;
+}
+
+.rev {
+    background-color: #fd3657;
 }
 
 .infoFormLayout {
