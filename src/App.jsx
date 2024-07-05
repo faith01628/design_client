@@ -14,6 +14,8 @@ import BioManager from './components/admin/BioManager';
 import Home from './components/user/Home';
 import UserProfile02 from './components/user/layout/BioPage02';
 import UserProfile from './components/user/layout/BioPage01';
+import View from './components/user/view';
+import NotFoundPage from './components/user/404';
 
 const Admin = ({ accessToken }) => {
     return (
@@ -90,9 +92,11 @@ const App = () => {
     return (
         <Router>
             <Routes>
+                <Route path="/viewuser/:herfid" element={<View currentInterface="desktop" />} />
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login onLogin={handleLogin} />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="*" element={<NotFoundPage />} />
                 <Route
                     path="/admin"
                     element={
@@ -141,7 +145,7 @@ const App = () => {
                         </RequireAuth>
                     }
                 />
-                <Route path="*" element={<Navigate to="/login" />} />
+                <Route path="*" element={<NotFoundPage />} />
             </Routes>
         </Router>
     );
